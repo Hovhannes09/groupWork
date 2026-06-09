@@ -1,35 +1,57 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Cinema</title>
-	</head>
-	<body>
-		<h1>Movies</h1>
+  <head>
+    <title>Cinema</title>
+    <link rel="stylesheet" href="/stylesheet/style.css" />
+  </head>
+  <body>
+    <h1>Movies</h1>
 
-		<div id="films"></div>
+    <div id="films"></div>
 
-		<script>
-			async function loadFilms() {
-				const response = await fetch('/films')
-				const data = await response.json()
+    <script>
+      async function loadFilms() {
+        const response = await fetch("/films");
+        const data = await response.json();
 
-				const container = document.getElementById('films')
+        const container = document.getElementById("films");
 
-				data.films.forEach(film => {
-					container.innerHTML += `
-            <div>
-                <h2>${film.title}</h2>
-                <p>${film.description}</p>
-                <p>Genre: ${film.genre}</p>
-                <p>Duration: ${film.duration} min</p>
+        for (const film of data.films) {
+          const filmRes = await fetch(`/films/${film.id}`);
+          const filmData = await filmRes.json();
 
-            </div>
-            <hr>
-        `
-				})
-			}
+          const showtimes = filmData.showtime || [];
 
-			loadFilms()
-		</script>
-	</body>
+          const showtimesHTML = showtimes.length
+            ? showtimes
+                .map(
+                  (st) => `
+							<div>
+								<p> Date: ${st.showDate}</p>
+								<p> Time: ${st.showTime}</p>
+								<p> Price: $${st.price}</p>
+								<p> Seats: ${st.totalSeats}</p>
+							</div>
+						`,
+                )
+                .join("<hr>")
+            : "<p>No showtimes available</p>";
+
+          container.innerHTML += `
+						<div>
+							<h2>${film.title}</h2>
+							<p>${film.description}</p>
+							<p>Genre: ${film.genre}</p>
+							<p>Duration: ${film.duration} min</p>
+							<h3>Showtimes:</h3>
+							${showtimesHTML}
+						</div>
+						<hr>
+					`;
+        }
+      }
+
+      loadFilms();
+    </script>
+  </body>
 </html>

@@ -33,7 +33,7 @@ body {
 .films-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-	gap: 2px;
+	gap: 24px;
 }
 
 .film-card {
@@ -128,4 +128,16 @@ body {
 	letter-spacing: 2px;
 	text-transform: uppercase;
 	padding: 60px 0;
+}
+
+.film-image {
+	width: 100%;
+	height: 490px;
+	object-fit: cover;
+	object-position: center;
+	display: block;
+}
+
+.film-info {
+	padding: 16px 24px 24px;
 }

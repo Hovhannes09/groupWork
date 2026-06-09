@@ -52,18 +52,19 @@
 						: '<span class="no-showtimes">No showtimes</span>'
 
 					container.innerHTML += `
-            <div class="film-card">
-              <div class="film-info">
-                <div class="film-genre">${film.genre || 'Film'}</div>
-                <div class="film-title">${film.title}</div>
-                <div class="film-meta">
-                  <span>${film.duration} min</span>
-                </div>
-                <div class="film-description">${film.description || ''}</div>
-                <div class="showtimes">${showtimesHTML}</div>
-              </div>
-            </div>
-          `
+    			<div class="film-card">
+      			${film.image ? `<img class="film-image" src="${film.image}" alt="${film.title}" />` : ''}
+      				<div class="film-info">
+       				 <div class="film-genre">${film.genre || 'Film'}</div>
+        	<div class="film-title">${film.title}</div>
+        <div class="film-meta">
+          <span>⏱ ${film.duration} min</span>
+        </div>
+        <div class="film-description">${film.description || ''}</div>
+        <div class="showtimes">${showtimesHTML}</div>
+      </div>
+    </div>
+  `
 				}
 			}
 

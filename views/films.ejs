@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Cinema</title>
+	</head>
+	<body>
+		<h1>Movies</h1>
+
+		<div id="films"></div>
+
+		<script>
+			async function loadFilms() {
+				const response = await fetch('/films')
+				const data = await response.json()
+
+				const container = document.getElementById('films')
+
+				data.films.forEach(film => {
+					container.innerHTML += `
+            <div>
+                <h2>${film.title}</h2>
+                <p>${film.description}</p>
+                <p>Genre: ${film.genre}</p>
+                <p>Duration: ${film.duration} min</p>
+
+            </div>
+            <hr>
+        `
+				})
+			}
+
+			loadFilms()
+		</script>
+	</body>
+</html>

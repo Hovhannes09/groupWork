@@ -1,72 +1,116 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Admin Panel</title>
-  </head>
-  <body>
-    <h1>Admin Dashboard</h1>
+	<head>
+		<title>Admin Panel</title>
+		<link
+			rel="stylesheet"
+			href="/stylesheet/style.css"
+		/>
+	</head>
+	<body>
+		<h1>Admin Dashboard</h1>
 
-    <form id="filmForm">
-      <input type="text" id="title" placeholder="Title" />
-      <input type="text" id="genre" placeholder="Genre" />
-      <input type="number" id="duration" placeholder="Duration" />
-      <textarea id="description" placeholder="Description"></textarea>
-      <input type="date" id="showDate" placeholder="ShowDate" />
-      <input type="text" id="showTime" placeholder="ShowTime (e.g. 18:00)" />
-      <input type="number" id="price" placeholder="Price" />
-      <input type="number" id="totalSeats" placeholder="Total Seats" />
-      <button type="submit">Add Film & Showtime</button>
-    </form>
+		<form id="filmForm">
+			<input
+				type="text"
+				id="title"
+				placeholder="Title"
+			/>
+			<input
+				type="text"
+				id="genre"
+				placeholder="Genre"
+			/>
+			<input
+				type="number"
+				id="duration"
+				placeholder="Duration"
+			/>
+			<textarea
+				id="description"
+				placeholder="Description"
+			></textarea>
+			<input
+				type="file"
+				id="image"
+				accept="image/*"
+			/>
+			<input
+				type="date"
+				id="showDate"
+				placeholder="ShowDate"
+			/>
+			<input
+				type="text"
+				id="showTime"
+				placeholder="ShowTime (e.g. 18:00)"
+			/>
+			<input
+				type="number"
+				id="price"
+				placeholder="Price"
+			/>
+			<input
+				type="number"
+				id="totalSeats"
+				placeholder="Total Seats"
+			/>
+			<button type="submit">Add Film & Showtime</button>
+		</form>
 
-    <script>
-      document
-        .getElementById("filmForm")
-        .addEventListener("submit", async (e) => {
-          e.preventDefault();
+		<script>
+			document
+				.getElementById('filmForm')
+				.addEventListener('submit', async e => {
+					e.preventDefault()
 
-          const filmRes = await fetch("/films", {
-            method: "POST",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              title: document.getElementById("title").value,
-              genre: document.getElementById("genre").value,
-              duration: Number(document.getElementById("duration").value),
-              description: document.getElementById("description").value,
-            }),
-          });
+					const formData = new FormData()
+					formData.append('title', document.getElementById('title').value)
+					formData.append('genre', document.getElementById('genre').value)
+					formData.append('duration', document.getElementById('duration').value)
+					formData.append(
+						'description',
+						document.getElementById('description').value
+					)
+					formData.append('image', document.getElementById('image').files[0])
 
-          const filmData = await filmRes.json();
+					const filmRes = await fetch('/films', {
+						method: 'POST',
+						credentials: 'include',
+						body: formData
+					})
 
-          if (!filmRes.ok) {
-            alert("Error creating film: " + JSON.stringify(filmData));
-            return;
-          }
+					const filmData = await filmRes.json()
 
-          const filmId = filmData.film.id;
+					if (!filmRes.ok) {
+						alert('Error creating film: ' + JSON.stringify(filmData))
+						return
+					}
 
-          const showtimeRes = await fetch("/admin/showtimes", {
-            method: "POST",
-            credentials: "include",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              showDate: document.getElementById("showDate").value,
-              showTime: document.getElementById("showTime").value,
-              price: Number(document.getElementById("price").value),
-              totalSeats: Number(document.getElementById("totalSeats").value),
-              filmId,
-            }),
-          });
+					const filmId = filmData.film.id
 
-          const showtimeData = await showtimeRes.json();
+					const showtimeRes = await fetch('/admin/showtimes', {
+						method: 'POST',
+						credentials: 'include',
+						headers: { 'Content-Type': 'application/json' },
+						body: JSON.stringify({
+							showDate: document.getElementById('showDate').value,
+							showTime: document.getElementById('showTime').value,
+							price: Number(document.getElementById('price').value),
+							totalSeats: Number(document.getElementById('totalSeats').value),
+							filmId
+						})
+					})
 
-          if (!showtimeRes.ok) {
-            alert("Error creating showtime: " + JSON.stringify(showtimeData));
-            return;
-          }
+					const showtimeData = await showtimeRes.json()
 
-          alert("Film and Showtime created successfully!");
-        });
-    </script>
-  </body>
+					if (!showtimeRes.ok) {
+						alert('Error creating showtime: ' + JSON.stringify(showtimeData))
+						return
+					}
+
+					alert('Film and Showtime created successfully!')
+				})
+		</script>
+	</body>
 </html>

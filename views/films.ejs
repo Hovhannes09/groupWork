@@ -2,31 +2,70 @@
 <html>
 	<head>
 		<title>Cinema</title>
+		<link
+			rel="preconnect"
+			href="https://fonts.googleapis.com"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600&display=swap"
+			rel="stylesheet"
+		/>
+		<link
+			rel="stylesheet"
+			href="/stylesheet/films.css"
+		/>
 	</head>
 	<body>
-		<h1>Movies</h1>
+		<div class="page-title">NOW SHOWING</div>
+		<div class="subtitle">Select a film to book your seats</div>
 
-		<div id="films"></div>
+		<div
+			id="films"
+			class="films-grid"
+		>
+			<div class="loading">Loading films</div>
+		</div>
 
 		<script>
 			async function loadFilms() {
+				const container = document.getElementById('films')
 				const response = await fetch('/films')
 				const data = await response.json()
+				container.innerHTML = ''
 
-				const container = document.getElementById('films')
+				for (const film of data.films) {
+					const filmRes = await fetch(`/films/${film.id}`)
+					const filmData = await filmRes.json()
+					const showtimes = filmData.showtime || []
 
-				data.films.forEach(film => {
+					const showtimesHTML = showtimes.length
+						? showtimes
+								.map(
+									st => `
+                <span class="showtime-badge">${st.showTime}</span>
+              `
+								)
+								.join('') +
+							(showtimes[0]
+								? `<span class="showtime-price">$${showtimes[0].price}</span>`
+								: '')
+						: '<span class="no-showtimes">No showtimes</span>'
+
 					container.innerHTML += `
-            <div>
-                <h2>${film.title}</h2>
-                <p>${film.description}</p>
-                <p>Genre: ${film.genre}</p>
-                <p>Duration: ${film.duration} min</p>
-
-            </div>
-            <hr>
-        `
-				})
+    			<div class="film-card">
+      			${film.image ? `<img class="film-image" src="${film.image}" alt="${film.title}" />` : ''}
+      				<div class="film-info">
+       				 <div class="film-genre">${film.genre || 'Film'}</div>
+        	<div class="film-title">${film.title}</div>
+        <div class="film-meta">
+          <span>⏱ ${film.duration} min</span>
+        </div>
+        <div class="film-description">${film.description || ''}</div>
+        <div class="showtimes">${showtimesHTML}</div>
+      </div>
+    </div>
+  `
+				}
 			}
 
 			loadFilms()

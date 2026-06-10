@@ -1,0 +1,143 @@
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background: #12141a;
+	color: #e8e4dc;
+	font-family: 'Inter', sans-serif;
+	min-height: 100vh;
+	padding: 40px 48px 60px;
+}
+
+.page-title {
+	font-family: 'Bebas Neue', sans-serif;
+	font-size: 48px;
+	letter-spacing: 4px;
+	color: #fff;
+	margin-bottom: 6px;
+}
+
+.subtitle {
+	font-size: 12px;
+	color: #555;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	margin-bottom: 36px;
+}
+
+.films-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: 24px;
+}
+
+.film-card {
+	background: #181b24;
+	border: 1px solid #1e2130;
+	padding: 24px;
+	transition: border-color 0.2s;
+	cursor: pointer;
+}
+
+.film-card:hover {
+	border-color: #f5c518;
+}
+
+.film-genre {
+	font-size: 10px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	color: #f5c518;
+	font-weight: 600;
+	margin-bottom: 6px;
+}
+
+.film-title {
+	font-family: 'Bebas Neue', sans-serif;
+	font-size: 26px;
+	letter-spacing: 1.5px;
+	color: #fff;
+	line-height: 1.1;
+	margin-bottom: 6px;
+}
+
+.film-meta {
+	font-size: 11px;
+	color: #555;
+	margin-bottom: 10px;
+}
+
+.film-description {
+	font-size: 12px;
+	color: #888;
+	line-height: 1.6;
+	margin-bottom: 16px;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+
+.showtimes {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	align-items: center;
+}
+
+.showtime-badge {
+	background: #0e1018;
+	border: 1px solid #2a2d38;
+	padding: 4px 12px;
+	font-size: 11px;
+	color: #e8e4dc;
+	font-weight: 600;
+	letter-spacing: 1px;
+	transition:
+		background 0.15s,
+		border-color 0.15s;
+	cursor: pointer;
+}
+
+.showtime-badge:hover {
+	background: #f5c518;
+	border-color: #f5c518;
+	color: #12141a;
+}
+
+.showtime-price {
+	font-size: 11px;
+	color: #f5c518;
+	font-weight: 600;
+}
+
+.no-showtimes {
+	font-size: 11px;
+	color: #3a3d4a;
+	font-style: italic;
+}
+
+.loading {
+	color: #3a3d4a;
+	font-size: 13px;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+	padding: 60px 0;
+}
+
+.film-image {
+	width: 100%;
+	height: 490px;
+	object-fit: cover;
+	object-position: center;
+	display: block;
+}
+
+.film-info {
+	padding: 16px 24px 24px;
+}
